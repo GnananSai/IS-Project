@@ -10,7 +10,9 @@ const Team = () => {
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="mb-4">
               {/* Placeholder for team member image */}
-              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full"></div>
+              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full">
+                <img className="w-24 h-24 mx-auto bg-gray-600 rounded-full" src = "gnana.jpeg"/>
+              </div>
             </div>
             <h3 className="text-xl font-semibold text-white">Gnana Sai Pendyala</h3>
             <p className="text-gray-400">Role: Developer</p>
@@ -20,7 +22,9 @@ const Team = () => {
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="mb-4">
               {/* Placeholder for team member image */}
-              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full"></div>
+              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full">
+              <img className="w-24 h-24 mx-auto bg-gray-600 rounded-full" src = "rohit.jpeg"/>
+              </div>
             </div>
             <h3 className="text-xl font-semibold text-white">Rohit Sangubotla</h3>
             <p className="text-gray-400">Role: Machine Training</p>
@@ -30,7 +34,9 @@ const Team = () => {
           <div className="bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="mb-4">
               {/* Placeholder for team member image */}
-              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full"></div>
+              <div className="w-24 h-24 mx-auto bg-gray-600 rounded-full">
+              <img className="w-24 h-24 mx-auto bg-gray-600 rounded-full" src = "vidhu.jpeg"/>
+              </div>
             </div>
             <h3 className="text-xl font-semibold text-white">Vidhu Sri Varenya</h3>
             <p className="text-gray-400">Role: Machine Training</p>

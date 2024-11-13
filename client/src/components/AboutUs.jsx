@@ -16,7 +16,9 @@ const AboutUs = () => {
 
           {/* Image/Illustration Placeholder */}
           <div className="flex justify-end">
-            <div className="w-72 h-72 bg-gray-600 rounded-lg shadow-lg"></div>
+            <div className="w-72 h-72 bg-gray-600 rounded-lg shadow-lg">
+              <img className='w-72 h-72 bg-gray-600 rounded-lg shadow-lg' src="manipal.png"/>
+            </div>
           </div>
         </div>
       </div>

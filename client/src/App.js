@@ -1,22 +1,14 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import AboutUs from './components/AboutUs';
-import Team from './components/Team';
-import ProjectDetails from './components/ProjectDetails';
-import HeroSection from './components/Hero';
-import Footer from './components/Footer';
 
-function App() {
+const App = () => {
   return (
-    <div className=''>
-      <Navbar />
-      <HeroSection/>
-      <AboutUs />
-      <Team />
-      <ProjectDetails /> 
-      <Footer/>
+    <div className="min-h-screen bg-gray-900 text-white">
+      {/* You can add a Navbar here if needed */}
+      <Outlet /> {/* This renders the matched child route */}
     </div>
   );
-}
+};
 
 export default App;

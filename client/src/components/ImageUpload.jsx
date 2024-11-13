@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [result, setResult] = useState('');
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Handle image selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -14,76 +17,96 @@ const ImageUpload = () => {
     }
   };
 
+  // Remove the selected image
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setImagePreviewUrl('');
+  };
+
+  // Handle image upload
   const handleUpload = async () => {
     if (!selectedImage) {
       alert('Please select an image first.');
       return;
     }
 
+    setLoading(true);
+
     const formData = new FormData();
-    formData.append('image', selectedImage);
+    formData.append('file', selectedImage);
 
     try {
       const response = await axios.post('http://localhost:5000/predict', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      setResult(response.data.message);
+
+      const { probabilities, steganography_probability } = response.data;
+
+      // Navigate to the results page with the received data
+      navigate('/results', {
+        state: {
+          imageUrl: imagePreviewUrl,
+          probabilities,
+          steganographyProbability: steganography_probability,
+        },
+      });
     } catch (error) {
-      setResult('Error: Could not analyze the image.');
+      console.error('Error uploading image:', error);
+      alert('An error occurred while processing the image.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRemoveImage = () => {
-    setSelectedImage(null);
-    setImagePreviewUrl('');
-    setResult('');
-  };
-
   return (
-    <div className="bg-gray-800 p-6  py-12 rounded-lg shadow-lg w-full max-w-md text-center">
-      <h1 className="text-3xl font-bold mb-4 text-white">Upload Your Image</h1>
-      <p className="text-gray-300 mb-6">Check for hidden messages in your images.</p>
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#FFE642] file:text-gray-900 hover:file:bg-[#FFD700] transition duration-300"
-      />
-
-      {selectedImage && (
-        <div className="mt-4 flex justify-between items-center">
-          <span className="text-gray-200">{selectedImage.name}</span>
-          <button
-            onClick={handleRemoveImage}
-            className="text-red-500 text-lg font-semibold hover:text-red-700"
-          >
-            ✕
-          </button>
+    <div className="bg-gray-800 p-6 py-12 rounded-lg shadow-lg w-full max-w-md text-center mt-12 ml-16">
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <img src="/spinner.png" alt="Loading" className="w-24 h-24 animate-spin" />
         </div>
       )}
+      {!loading && (
+        <>
+          <h1 className="text-3xl font-bold mb-6 text-white">Upload Your Image</h1>
 
-      <button
-        onClick={handleUpload}
-        className="mt-6 bg-[#FFE642] text-black py-3 px-6 rounded-lg hover:bg-[#FFD700] transition duration-300 w-full font-bold"
-      >
-        Upload and Check
-      </button>
+          {/* Image preview section with remove button */}
+          {imagePreviewUrl && (
+            <div className="relative mb-4">
+              <img
+                src={imagePreviewUrl}
+                alt="Selected Preview"
+                className="w-full h-64 object-contain mx-auto rounded-lg shadow-lg"
+              />
+              {/* Remove button (X) */}
+              <button
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center focus:outline-none hover:bg-red-600 transition duration-300"
+              >
+                &times;
+              </button>
+            </div>
+          )}
 
-      {imagePreviewUrl && (
-        <div className="mt-6">
-          <img
-            src={imagePreviewUrl}
-            alt="Selected"
-            className="w-full h-auto rounded-lg shadow-lg border border-gray-300"
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-400 file:text-gray-900 hover:file:bg-yellow-500 transition duration-300 mb-4"
           />
-        </div>
-      )}
 
-      {result && (
-        <div className="mt-6 p-4 bg-green-100 text-green-700 border border-green-400 rounded-lg">
-          {result}
-        </div>
+          {selectedImage && (
+            <p className="text-gray-400 mb-4">{selectedImage.name}</p>
+          )}
+
+          <button
+            onClick={handleUpload}
+            className="mt-4 bg-yellow-400 text-black py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 w-full font-bold"
+          >
+            Upload and Analyze
+          </button>
+        </>
       )}
     </div>
   );
