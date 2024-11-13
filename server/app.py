@@ -34,11 +34,10 @@ model.load_state_dict(torch.load('val_loss_6.08_auc_0.875.pth', map_location=dev
 model.to(device)
 model.eval()
 
-# Define test augmentations
+
 AUGMENTATIONS_TEST = A.Compose([
-    A.Resize(224, 224),  
-    A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-    ToTensorV2()  
+    A.ToFloat(max_value=255),
+    A.pytorch.transforms.ToTensorV2()
 ])
 
 # Function to preprocess and predict a single image

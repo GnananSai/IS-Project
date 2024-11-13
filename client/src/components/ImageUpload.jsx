@@ -69,8 +69,8 @@ const ImageUpload = () => {
       )}
       {!loading && (
         <>
-          <h1 className="text-3xl font-bold mb-6 text-white">Upload Your Image</h1>
-
+          <h1 className="text-3xl font-bold mb-2 text-white">Upload Your Image</h1>
+          <h2 className='text-sm mb-6 text-gray-300'>(Please upload images in *.jpg format)</h2>
           {/* Image preview section with remove button */}
           {imagePreviewUrl && (
             <div className="relative mb-4">
